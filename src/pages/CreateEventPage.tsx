@@ -18,7 +18,7 @@ const CreateEventPage = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto">
       <header className="mb-8">
         <h1 className="text-3xl font-extrabold text-white">Create New Event</h1>
         <p className="text-slate-400 mt-1">
