@@ -1,3 +1,28 @@
+Как вы распределяетесь после этого:
+Заливаешь этот базовый каркас в main через Pull Request.
+
+Ты создаёшь ветку feature/events-list и пишeшь код в:
+
+# pages/HomePage.tsx
+
+# pages/EventDetailsPage.tsx
+
+# services/api.ts (секция 🔥 getEvents, getEventById)
+
+# Настраиваешь верстку карточек событий.
+
+Антон создаёт ветку feature/auth-system и пишет код в:
+
+# pages/LoginPage.tsx
+
+# pages/SignupPage.tsx
+
+# pages/CreateEventPage.tsx
+
+# components/ProtectedRoute.tsx
+
+# services/api.ts (секция 🚀 loginUser, registerUser, createEvent)
+
 # React + TypeScript + Vite
 
 🍀 FR003 Public GitHub Repository Keep all code in a single public repo; do not add instructors as collaborators.
