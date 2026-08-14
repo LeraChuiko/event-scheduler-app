@@ -3,7 +3,7 @@ import EventCard from '../components/EventCard';
 
 const HomePage = () => {
   return (
-    <div className="py-6">
+    <div>
       <header className="mb-8">
         <h1 className="text-3xl font-extrabold text-white">Upcoming Events</h1>
         <p className="text-slate-400 mt-1">
