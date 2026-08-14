@@ -1,22 +1,50 @@
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MOCK_EVENTS } from '../data/mockEvents';
+import { getEventById } from '../services/api';
+import type { EventItem } from '../types/event';
 
 const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const event = MOCK_EVENTS.find((e) => e.id === id);
+  const [event, setEvent] = useState<EventItem | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const data = await getEventById(id);
+        setEvent(data);
+      } catch (err) {
+        console.error('Failed to load event details:', err);
+        setError('Failed to load event');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [id]);
+
+  if (loading) {
+    return <div className="py-12 text-center text-white">Loading event...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="py-12 text-center text-red-400">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   if (!event) {
     return (
       <div className="py-12 text-center">
         <h2 className="text-2xl font-bold text-white mb-4">Event Not Found</h2>
-        <p className="text-slate-400 mb-6">
-          The event you are looking for does not exist or has been removed.
-        </p>
-        <Link
-          to="/"
-          className="inline-block bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-2.5 rounded-lg transition-colors"
-        >
-          &larr; Back to Events
+        <Link to="/" className="text-blue-400 hover:underline">
+          ← Back to Events
         </Link>
       </div>
     );

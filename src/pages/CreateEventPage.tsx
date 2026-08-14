@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createEvent } from '../services/api';
 
 const CreateEventPage = () => {
   const navigate = useNavigate();
@@ -11,10 +12,15 @@ const CreateEventPage = () => {
     location: '',
   });
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    console.log('New Event Created:', formData);
-    navigate('/');
+    try {
+      await createEvent(formData);
+      navigate('/');
+    } catch (err) {
+      console.error('Failed to create event:', err);
+      alert('Error creating event. Check console for details.');
+    }
   };
 
   return (
