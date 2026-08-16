@@ -4,6 +4,8 @@ import { createEvent } from '../services/api';
 
 const CreateEventPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
     title: '',
@@ -14,12 +16,19 @@ const CreateEventPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
     try {
-      await createEvent(formData);
+      await createEvent({
+        ...formData,
+        date: new Date(formData.date).toISOString(),
+      });
       navigate('/');
     } catch (err) {
-      console.error('Failed to create event:', err);
-      alert('Error creating event. Check console for details.');
+      setError(err instanceof Error ? err.message : 'Failed to create event.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -101,6 +110,12 @@ const CreateEventPage = () => {
           />
         </div>
 
+        {error && (
+          <p role="alert" className="text-sm text-red-400">
+            {error}
+          </p>
+        )}
+
         {/* Submit Button */}
         <div className="pt-2 flex items-center justify-end gap-4">
           <button
@@ -112,9 +127,10 @@ const CreateEventPage = () => {
           </button>
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors text-sm shadow-md"
+            disabled={isLoading}
+            className="bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white font-medium px-6 py-2.5 rounded-lg transition-colors text-sm shadow-md"
           >
-            Publish Event
+            {isLoading ? 'Publishing...' : 'Publish Event'}
           </button>
         </div>
       </form>
