@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import EventDetailsPage from './pages/EventDetailsPage';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import CreateEventPage from './pages/CreateEventPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import Layout from '@/components/Layout';
+import HomePage from '@/pages/HomePage';
+import EventDetailsPage from '@/pages/EventDetailsPage';
+import LoginPage from '@/pages/LoginPage';
+import SignupPage from '@/pages/SignupPage';
+import CreateEventPage from '@/pages/CreateEventPage';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const App = () => {
   return (
@@ -23,7 +23,7 @@ const App = () => {
           <Route path="events/create" element={<CreateEventPage />} />
         </Route>
 
-        {/* Fallback 404 Route */}
+        {/* Fallback 404 Route. Alle anderen Pfadoptionen */}
         <Route
           path="*"
           element={
