@@ -5,6 +5,7 @@ import type { CreateEventPayload } from '@/types/event';
 
 const CreateEventPage = () => {
   const navigate = useNavigate();
+   const [error, setError] = useState('');
 
   const [formData, setFormData] = useState<CreateEventPayload>({
     title: '',
@@ -23,17 +24,26 @@ const CreateEventPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setError('');
+   
+
     try {
-      // Enable submitting state before starting the API request
+// Enable submitting state before starting the API request
       setIsSubmitting(true);
-      await createEvent(formData);
+
+      // Pass ISO-formatted date for backend validation
+      await createEvent({
+        ...formData,
+        date: new Date(formData.date).toISOString(),
+      });
       navigate('/');
     } catch (err) {
       console.error('Failed to create event:', err);
-      alert('Error creating event. Check console for details.');
+      setError(err instanceof Error ? err.message : 'Failed to create event.');
     } finally {
       // Reset submitting state regardless of request success or failure
       setIsSubmitting(false);
+    
     }
   };
 
@@ -116,6 +126,12 @@ const CreateEventPage = () => {
           />
         </div>
 
+        {error && (
+          <p role="alert" className="text-sm text-red-400">
+            {error}
+          </p>
+        )}
+
         {/* Submit Button */}
         <div className="pt-2 flex items-center justify-end gap-4">
           <button
@@ -127,7 +143,7 @@ const CreateEventPage = () => {
           </button>
           <button
             type="submit"
-            disabled={isSubmitting} // Prevent double clicks during active request
+disabled={isSubmitting} // Prevent double clicks during active request
             className={`bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors text-sm shadow-md ${
               isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
