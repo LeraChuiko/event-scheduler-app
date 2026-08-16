@@ -1,25 +1,39 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createEvent } from '../services/api';
+import { createEvent } from '@/services/api';
+import type { CreateEventPayload } from '@/types/event';
 
 const CreateEventPage = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateEventPayload>({
     title: '',
     description: '',
     date: '',
     location: '',
   });
 
+  // State to manage button pending state during form submission
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  // Calculate current local date-time string (YYYY-MM-DDTHH:mm) to disable past dates
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  const minDateTime = now.toISOString().slice(0, 16);
+
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     try {
+      // Enable submitting state before starting the API request
+      setIsSubmitting(true);
       await createEvent(formData);
       navigate('/');
     } catch (err) {
       console.error('Failed to create event:', err);
       alert('Error creating event. Check console for details.');
+    } finally {
+      // Reset submitting state regardless of request success or failure
+      setIsSubmitting(false);
     }
   };
 
@@ -78,6 +92,7 @@ const CreateEventPage = () => {
           <input
             type="datetime-local"
             required
+            min={minDateTime} // Restrict selecting past dates
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
             className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
@@ -112,9 +127,12 @@ const CreateEventPage = () => {
           </button>
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors text-sm shadow-md"
+            disabled={isSubmitting} // Prevent double clicks during active request
+            className={`bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors text-sm shadow-md ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
-            Publish Event
+            {isSubmitting ? 'Publishing...' : 'Publish Event'}
           </button>
         </div>
       </form>

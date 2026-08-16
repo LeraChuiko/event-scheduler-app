@@ -12,3 +12,7 @@ export interface CreateEventPayload {
   date: string;
   location: string;
 }
+
+//В реальных командных проектах команда просто выбирает
+// соглашение (Style Guide): например, "Все структуры данных
+// и объектов описываем через interface, а союзы (Union) и примитивы — через type".

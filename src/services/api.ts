@@ -1,4 +1,4 @@
-import type { EventItem, CreateEventPayload } from '../types/event';
+import type { EventItem, CreateEventPayload } from '@/types/event';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
