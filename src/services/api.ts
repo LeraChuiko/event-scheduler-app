@@ -1,5 +1,5 @@
-import type { EventItem, CreateEventPayload } from '../types/event';
-import { AUTH_TOKEN_KEY } from '../context/auth';
+import type { EventItem, CreateEventPayload } from '@/types/event';
+import { AUTH_TOKEN_KEY } from '@/context/auth';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 

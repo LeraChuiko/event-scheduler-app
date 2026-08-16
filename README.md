@@ -1,51 +1,9 @@
-Как вы распределяетесь после этого:
-Заливаешь этот базовый каркас в main через Pull Request.
+🔥 FR011 Home Page Event – List Fetch events (GET /api/events) and render them as cards sorted chronologically. (api.ts)
 
-Ты создаёшь ветку feature/events-list и пишeшь код в:
-
-# pages/HomePage.tsx
-
-# pages/EventDetailsPage.tsx
-
-# services/api.ts (секция 🔥 getEvents, getEventById)
-
-# Настраиваешь верстку карточек событий.
-
-Антон создаёт ветку feature/auth-system и пишет код в:
-
-# pages/LoginPage.tsx
-
-# pages/SignupPage.tsx
-
-# pages/CreateEventPage.tsx
-
-# components/ProtectedRoute.tsx
-
-# services/api.ts (секция 🚀 loginUser, registerUser, createEvent)
-
-# React + TypeScript + Vite
-
-🍀 FR003 Public GitHub Repository Keep all code in a single public repo; do not add instructors as collaborators.
-
-🍀 FR004 Incremental Development with PRs Merge every change into main exclusively via Pull Requests.
-
-🍀 FR005 React + Vite Front-End Scaffold and run the app with Vite using React.
-
-🍀 FR006 TailwindCSS Styling Style the UI with TailwindCSS (may augment with DaisyUI).
-
-🍀 FR007 React Router Setup Configure routing with React Router, including protected routes.
-
-🍀 FR008 State & Effects Management Use React hooks (useState, useEffect, etc.) to manage UI state and side-effects.
-
-🚀 FR009 API Key Persistence Store/retrieve the user’s API token in localStorage.
-
-🚀 FR010 Run Local Events API Clone, install, and run the provided Events API locally for development.
-
-🔥 FR011 Home Page – Event List Fetch events (GET /api/events) and render them as cards sorted chronologically.
-
-🔥 FR012 Event Card Navigation Clicking an event card navigates to /events/:id with React Router.
+🔥 FR012 Event Card Navigation - Clicking an event card navigates to /events/:id with React Router. (App.tsx, Layout.tsx, ProtectedRoute.tsx)
 
 🔥 FR013 Event Details Page Fetch and display full event data by ID (GET /api/events/:id).
+(EventDetailsPage.tsx, api.ts, event.ts)
 
 🚀 FR014 Sign-Up Page Render registration form; send POST /api/users; on success redirect to Sign-In.
 
@@ -53,12 +11,6 @@
 
 🚀 FR016 Protected Route Layout Wrap routes that require authentication (e.g., Create Event) in a guard that redirects unauthenticated users to Sign-In.
 
-🚀 FR017 Create Event Page Provide a form that sends POST /api/events with the token; block access and submission if no valid token.
+🔥 FR017 Create Event Page Provide a form that sends POST /api/events with the token; block access and submission if no valid token.
 
 🚀 🔥FR018 Token Injection in Requests Automatically attach the stored token to request headers.
-
-🍀 FR019 Error Handling & Feedback Gracefully display API or network errors (e.g., auth failure, 404) to the user.
-
-🍀 FR020 Responsive Design Ensure the UI remains usable across mobile and desktop break-points.
-
-🍀 FR021 Static-Site Deployment Build the React app and deploy the static output to Render.

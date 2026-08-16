@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getEventById } from '../services/api';
-import type { EventItem } from '../types/event';
+import { getEventById } from '@/services/api';
+import type { EventItem } from '@/types/event';
 
 const EventDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,8 +14,8 @@ const EventDetailsPage = () => {
       if (!id) return;
       try {
         setLoading(true);
-        const data = await getEventById(id);
-        setEvent(data);
+        const data = await getEventById(id); //api.ts
+        setEvent(data); //renew State "event"
       } catch (err) {
         console.error('Failed to load event details:', err);
         setError('Failed to load event');

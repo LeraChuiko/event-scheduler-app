@@ -1,10 +1,10 @@
-import type { EventItem } from '../types/event';
-import EventCard from '../components/EventCard';
-import { getEvents } from '../services/api';
+import type { EventItem } from '@/types/event';
+import EventCard from '@/components/EventCard';
+import { getEvents } from '@/services/api';
 import { useState, useEffect } from 'react';
 
 const HomePage = () => {
-  const [events, setEvents] = useState<EventItem[]>([]);
+  const [events, setEvents] = useState<EventItem[]>([]); //Array von Objekten vom Typ EventItem
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -12,7 +12,11 @@ const HomePage = () => {
       try {
         setLoading(true);
         const data = await getEvents();
-        setEvents(data);
+        // 🎯 sorted
+        const sortedData = [...data].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+        setEvents(sortedData);
       } catch (err) {
         console.error('Failed to load events:', err);
         setError('Failed to load events from server');
