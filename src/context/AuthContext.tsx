@@ -17,7 +17,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const cleanToken = newToken.trim();
 
     if (!cleanToken) {
-      throw new Error('The server did not return a valid authentication token.');
+      throw new Error(
+        'The server did not return a valid authentication token.',
+      );
     }
 
     localStorage.setItem(AUTH_TOKEN_KEY, cleanToken);
