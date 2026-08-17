@@ -46,28 +46,59 @@ Wenn die Daten erfolgreich geladen werden, werden Titel, Datum, Ort und Beschrei
 
 Die Komponente <Link to="/"> ermöglicht dem Benutzer die einfache Navigation zurück zur Hauptseite.
 
-🚀 FR014 Sign-Up Page Render registration form; send POST /api/users; on success redirect to Sign-In.
+🚀 FR014 Sign-Up Page - Registrierung eines neuen Benutzers (POST /api/users).
 
-🚀 FR015 Sign-In Page Render login form; send POST /api/auth/login; on success store API token and redirect to Home.
+SignupPage.tsx enthält das Registrierungsformular mit Name, E-Mail und Passwort.
 
-🚀 FR016 Protected Route Layout Wrap routes that require authentication (e.g., Create Event) in a guard that redirects unauthenticated users to Sign-In.
+Beim Absenden wird registerUser() aus api.ts aufgerufen. Die eingegebenen Daten werden als JSON mit einem POST-Request an ${API_BASE_URL}/users gesendet.
 
-🔥 FR017 Create Event Page Provide a form that sends POST /api/events with the token; block access and submission if no valid token.
+Wenn die Registrierung erfolgreich ist, wird der Benutzer automatisch angemeldet und kann die geschützten Bereiche der Anwendung nutzen.
 
-Stellt ein Forma bereit, das ein neues Event per POST /api/events mit einem Auth-Token erstellt. Der Zugriff sowie das Absenden werden blockiert, wenn kein gültiges Token vorhanden ist.
+Fehler vom Server oder Netzwerk werden abgefangen und direkt im Formular angezeigt.
 
-CreateEventPage.tsx: Enthält das Formular und ruft die Funktion createEvent beim Absenden auf.
 
-ProtectedRoute.tsx: Blockiert den Zugriff für nicht angemeldete Benutzer und leitet sie direkt auf /login weiter.
+🚀 FR015 Sign-In Page - Anmeldung eines bestehenden Benutzers (POST /api/auth/login).
 
-api.ts (createEvent): Prüft vor dem Senden der Anfrage das Vorhandensein des Tokens im localStorage und wirft einen Fehler, falls kein Token existiert.
+LoginPage.tsx enthält das Login-Formular mit E-Mail und Passwort.
 
-🚀 🔥FR018 Token Injection in Requests Automatically attach the stored token to request headers.(api.ts->createEvent, Token Injection
+Beim Absenden wird loginUser() aus api.ts aufgerufen. Der Server prüft die Zugangsdaten und sendet bei erfolgreicher Anmeldung ein Authentifizierungs-Token zurück.
 
-Fügt das gespeicherte Auth-Token automatisch in die Request-Header bei Anfragen an geschützte Backend-Endpunkte ein.
+Dieses Token wird im localStorage gespeichert und dient danach als Nachweis, dass der Benutzer angemeldet ist.
 
-Das Token dient als «digitaler Pass» des Benutzers für den Server.
+Der AuthProvider stellt den Login-Status für die gesamte React-Anwendung bereit.
 
-Das Token wird aus dem localStorage ausgelesen und im Header mitgeschickt:Authorization: Bearer <token>
+Beim Logout wird das gespeicherte Token entfernt und der Benutzer gilt wieder als nicht angemeldet.
 
-Ohne diesen Header weist der Server die Anfrage mit einem Fehler (z. B. 401 Unauthorized) ab.
+
+🚀 FR016 Protected Route - Schutz von Seiten, die nur für angemeldete Benutzer zugänglich sind.
+
+ProtectedRoute.tsx prüft über useAuth(), ob ein Benutzer authentifiziert ist.
+
+Ist kein Benutzer angemeldet, wird der Zugriff auf /events/create blockiert und der Benutzer zur Login-Seite weitergeleitet.
+
+Nach einer erfolgreichen Anmeldung kann der Benutzer anschließend zur gewünschten geschützten Seite zurückkehren.
+
+Damit können öffentliche Seiten wie die Event-Liste und Event-Details von allen Benutzern angesehen werden, während das Erstellen neuer Events eine Anmeldung erfordert.
+
+🔥 FR017 Create Event Page - Erstellung eines neuen Events mit Authentifizierung (POST /api/events).
+
+CreateEventPage.tsx enthält das Formular zum Erstellen eines neuen Events.
+
+Beim Absenden wird createEvent() aus api.ts aufgerufen. Die Formulardaten werden als JSON mit einem POST-Request an ${API_BASE_URL}/events gesendet.
+
+Vor dem Senden prüft createEvent(), ob ein Auth-Token im localStorage vorhanden ist.
+
+Ohne gültiges Token wird die Anfrage blockiert und eine Fehlermeldung ausgegeben.
+
+Nach erfolgreicher Erstellung wird der Benutzer zurück zur Event-Liste weitergeleitet und das neue Event erscheint dort.
+
+
+🚀 FR018 Token Injection in Requests - Automatisches Einfügen des gespeicherten Tokens in geschützte API-Anfragen.
+
+Das Auth-Token wird aus dem localStorage ausgelesen und automatisch im Authorization-Header mitgesendet:
+
+Authorization: Bearer <token>
+
+Dadurch kann der Server erkennen, dass die Anfrage von einem angemeldeten Benutzer kommt.
+
+Ohne diesen Header wird der Zugriff auf geschützte Endpunkte vom Server abgelehnt.
