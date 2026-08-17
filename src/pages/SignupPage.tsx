@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/api';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
+import { loginUser, registerUser } from '../services/api';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -9,6 +10,13 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  // Get current location state to check for redirect path
+  const location = useLocation();
+  // Access auth context to perform immediate login
+  const { login } = useAuth();
+
+  // Extract intended destination route or fallback to home page
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,8 +24,15 @@ const SignupPage = () => {
     setIsLoading(true);
 
     try {
+      // 1. Register new user
       await registerUser({ name, email, password });
-      navigate('/login');
+
+      // 2. Automatically log in user to acquire auth token
+      const token = await loginUser({ email, password });
+      login(token);
+
+      // 3. Redirect directly to target route or fallback home page
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign up failed.');
     } finally {
@@ -87,7 +102,12 @@ const SignupPage = () => {
       </form>
       <p className="text-sm text-slate-400 text-center mt-5">
         Already have an account?{' '}
-        <Link to="/login" className="text-blue-400 hover:text-blue-300">
+        {/* Pass location state to preserve redirect destination */}
+        <Link
+          to="/login"
+          state={location.state}
+          className="text-blue-400 hover:text-blue-300"
+        >
           Sign In
         </Link>
       </p>

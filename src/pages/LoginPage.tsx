@@ -13,6 +13,9 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Extract intended destination route or fallback to home page
+  const from = location.state?.from?.pathname || '/';
+
   const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
@@ -21,7 +24,8 @@ const LoginPage = () => {
     try {
       const token = await loginUser({ email, password });
       login(token);
-      navigate('/');
+      // Redirect user to the original destination route after successful login
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign in failed.');
     } finally {
@@ -51,7 +55,8 @@ const LoginPage = () => {
             id="login-email"
             type="email"
             required
-            autoComplete="email"
+            /* Disable browser autofill for email */
+            autoComplete="off"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 focus:outline-none focus:border-blue-500"
@@ -86,7 +91,12 @@ const LoginPage = () => {
       </form>
       <p className="text-sm text-slate-400 text-center mt-5">
         Need an account?{' '}
-        <Link to="/signup" className="text-blue-400 hover:text-blue-300">
+        {/* Pass state to SignUp page so redirect location is preserved */}
+        <Link
+          to="/signup"
+          state={location.state}
+          className="text-blue-400 hover:text-blue-300"
+        >
           Sign Up
         </Link>
       </p>
