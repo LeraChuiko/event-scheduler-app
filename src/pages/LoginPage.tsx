@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/useAuth';
-import { loginUser } from '../services/api';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/useAuth';
+import { loginUser } from '@/services/api';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const location = useLocation();
+  const redirectedFromProtected = location.state?.fromProtected;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +31,16 @@ const LoginPage = () => {
 
   return (
     <div className="max-w-md mx-auto my-12 p-6 bg-slate-800 rounded-xl shadow-lg border border-slate-700">
+      {redirectedFromProtected && (
+        <div className="mb-6 p-3.5 bg-blue-500/10 border border-blue-500/30 rounded-lg text-blue-300 text-sm text-center space-y-1">
+          <span className="block font-medium">
+            Creating events requires an account.
+          </span>
+          <span className="block opacity-90">
+            Please sign in or register to continue.
+          </span>
+        </div>
+      )}
       <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>

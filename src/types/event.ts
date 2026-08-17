@@ -13,6 +13,7 @@ export interface CreateEventPayload {
   location: string;
 }
 
-//В реальных командных проектах команда просто выбирает
-// соглашение (Style Guide): например, "Все структуры данных
-// и объектов описываем через interface, а союзы (Union) и примитивы — через type".
+//Bei realen Teamprojekten wählt das Team einfach eine Konvention (Style Guide):
+//zum Beispiel: „Alle Datenstrukturen und Objekte werden mithilfe von interface
+//beschrieben, und Vereinigungen und primitive Datentypen werden mithilfe
+// von Typen beschrieben.
