@@ -1,12 +1,19 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
 
   if (!isAuthenticated) {
-    // Pass redirect state so the login page knows the user was redirected from a protected route
-    return <Navigate to="/login" state={{ fromProtected: true }} replace />;
+    // Pass target location along with redirect state so the login page can redirect back
+    return (
+      <Navigate
+        to="/login"
+        state={{ fromProtected: true, from: location }}
+        replace
+      />
+    );
   }
 
   return <Outlet />;
