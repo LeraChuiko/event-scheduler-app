@@ -1,7 +1,7 @@
 import type { EventItem, CreateEventPayload } from '@/types/event';
 import { AUTH_TOKEN_KEY } from '@/context/auth';
 
-const API_BASE_URL = 'https://events-api-zrx3.onrender.com';
+const API_BASE_URL = 'https://events-api-zrx3.onrender.com/api';
 
 export interface LoginCredentials {
   email: string;
