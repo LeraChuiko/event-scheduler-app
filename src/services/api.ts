@@ -109,6 +109,7 @@ export const registerUser = async (credentials: RegistrationData) => {
   }
 };
 
+//liest das Token aus dem localStorage und sendet eine POST-Anfrage.
 export const createEvent = async (
   payload: CreateEventPayload,
 ): Promise<EventItem> => {
@@ -122,7 +123,7 @@ export const createEvent = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`, // <--  Token Injection
     },
     body: JSON.stringify(payload),
   });

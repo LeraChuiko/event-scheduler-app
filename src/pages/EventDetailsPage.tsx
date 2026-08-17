@@ -57,7 +57,7 @@ const EventDetailsPage = () => {
         to="/"
         className="inline-flex items-center text-sm text-blue-400 hover:underline mb-6"
       >
-        &larr; Back to All Events
+        ← Back to All Events
       </Link>
 
       {/* Main Content Card */}

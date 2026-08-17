@@ -5,7 +5,8 @@ const ProtectedRoute = () => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // Pass redirect state so the login page knows the user was redirected from a protected route
+    return <Navigate to="/login" state={{ fromProtected: true }} replace />;
   }
 
   return <Outlet />;
